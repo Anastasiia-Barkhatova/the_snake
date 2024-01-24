@@ -99,7 +99,6 @@ class Snake(GameObject):
         super().__init__()
         self.body_color = SNAKE_COLOR
         self.reset()
-        self.direction = RIGHT
         self.next_direction = None
         self.last = None
 
@@ -126,9 +125,10 @@ class Snake(GameObject):
         dx = self.direction[0]
         dy = self.direction[1]
 
-        new_x = (head_position[0] + dx * GRID_SIZE) % SCREEN_WIDTH
-        new_y = (head_position[1] + dy * GRID_SIZE) % SCREEN_WIDTH
-        new_head_position = (new_x, new_y)
+        new_head_position = (
+            ((head_position[0] + dx * GRID_SIZE) % SCREEN_WIDTH),
+            ((head_position[1] + dy * GRID_SIZE) % SCREEN_WIDTH)
+        )
 
         if new_head_position in self.positions[2:]:
             self.reset()
@@ -158,10 +158,6 @@ class Snake(GameObject):
             self.draw_cell(surface, position)
         head_position = self.positions[0]
         self.draw_cell(surface, head_position)
-
-        head_rect = pygame.Rect(self.positions[0], (GRID_SIZE, GRID_SIZE))
-        pygame.draw.rect(surface, self.body_color, head_rect)
-        pygame.draw.rect(surface, BORDER_COLOR, head_rect, 1)
 
         if self.last:
             last_rect = pygame.Rect(
@@ -222,7 +218,6 @@ def main():
 
         if snake.positions[0] in snake.positions[1:]:
             snake.reset()
-            # snake.move()
 
         pygame.display.update()
 
